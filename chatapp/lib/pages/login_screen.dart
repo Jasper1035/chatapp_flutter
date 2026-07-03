@@ -1,3 +1,4 @@
+import 'package:chatapp/auth/auth_service.dart';
 import 'package:chatapp/components/my_button.dart';
 import 'package:chatapp/components/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,23 @@ class LoginScreen extends StatelessWidget {
 
   //log in method
 
-  void login() {}
+  Future<void> login(BuildContext context) async {
+    //auth service
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
+    } catch (e) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(title: Text(e.toString())),
+      );
+    }
+  }
 
   LoginScreen({super.key, required this.onTap});
 
@@ -59,7 +76,7 @@ class LoginScreen extends StatelessWidget {
 
             SizedBox(height: 35),
             //log in button
-            MyButton(text: 'Log in', onTap: login),
+            MyButton(text: 'Log in', onTap: () => login(context)),
 
             SizedBox(height: 25),
 
