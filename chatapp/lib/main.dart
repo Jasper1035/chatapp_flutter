@@ -1,6 +1,6 @@
 // import 'package:chatapp/pages/login_screen.dart';
 import 'package:chatapp/auth/auth_gate.dart';
-import 'package:chatapp/auth/login_or_register.dart';
+// import 'package:chatapp/auth/login_or_register.dart';
 import 'package:chatapp/firebase_options.dart';
 // import 'package:chatapp/pages/register_page.dart';
 import 'package:chatapp/theme/light_mode.dart';
@@ -18,6 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: lightMode, home: AuthGate());
+    return MaterialApp(
+      theme: lightMode,
+      debugShowCheckedModeBanner: false,
+
+      home: AuthGate(),
+    );
   }
 }

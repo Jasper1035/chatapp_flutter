@@ -1,3 +1,4 @@
+import 'package:chatapp/auth/auth_service.dart';
 import 'package:chatapp/components/my_button.dart';
 import 'package:chatapp/components/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +9,37 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _confirmController = TextEditingController();
   final Function()? onTap;
 
-  //register method
-  void register() {}
-
   RegisterPage({super.key, required this.onTap});
+
+  //register method
+
+  void register(BuildContext context) {
+    final _auth = AuthService();
+
+    //passwords match -> create user
+    if (_passwordController.text == _confirmController.text) {
+      try {
+        _auth.signUpWithEmailPassword(
+          _emailController.text,
+          _passwordController.text,
+        );
+      } catch (e) {
+        showDialog(
+          // ignore: use_build_context_synchronously
+          context: context,
+          builder: (context) => AlertDialog(title: Text(e.toString())),
+        );
+      }
+    }
+    //password don't match -> tell user to fix
+    else {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(title: Text('password don\'t match')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +92,7 @@ class RegisterPage extends StatelessWidget {
 
             SizedBox(height: 35),
             //log in button
-            MyButton(text: 'Register', onTap: register),
+            MyButton(text: 'Register', onTap: () => register(context)),
 
             SizedBox(height: 25),
 
