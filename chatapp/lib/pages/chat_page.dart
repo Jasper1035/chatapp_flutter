@@ -1,5 +1,6 @@
 // import 'dart:nativewrappers/_internal/vm/bin/vmservice_io.dart';
 
+import 'package:chatapp/components/chat_bubble.dart';
 import 'package:chatapp/components/my_textfield.dart';
 import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:chatapp/services/chat/chat_service.dart';
@@ -59,21 +60,45 @@ class ChatPage extends StatelessWidget {
   Widget buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    return Text(data['message']);
+    bool isCurrentUser = data['senderID'] == authService.getCurrentUser()!.uid;
+
+    var alignment = isCurrentUser
+        ? Alignment.centerRight
+        : Alignment.centerLeft;
+
+    return Container(
+      alignment: alignment,
+      child: ChatBubble(message: data['message'], isCurrentUser: isCurrentUser),
+    );
   }
 
   Widget buildUserInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: MyTextfield(
-            hintText: 'type a message',
-            obscure: false,
-            controller: messageController,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 50),
+      child: Row(
+        children: [
+          Expanded(
+            child: MyTextfield(
+              hintText: 'type a message',
+              obscure: false,
+              controller: messageController,
+            ),
           ),
-        ),
-        IconButton(onPressed: sendMessage, icon: Icon(Icons.send)),
-      ],
+
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 25),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              // borderRadius: BorderRadius.circular(40),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: sendMessage,
+              icon: Icon(Icons.send, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
