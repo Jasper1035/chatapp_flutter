@@ -23,8 +23,10 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Home'),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
         elevation: 0,
       ),
       drawer: MyDrawer(),
